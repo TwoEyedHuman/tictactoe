@@ -1,7 +1,7 @@
 #include <iostream>
-
+#include <map>
 //Global variables
-int gameBoardSize = 3; //for an nxn board
+const int gameBoardSize = 3; //for an nxn board
 char gameBoard [gameBoardSize][gameBoardSize]; //TicTacToe board
 
 //User-defined functions
@@ -15,10 +15,33 @@ char checkDiag(int d);
 
 
 int main() {
-	while (winner() != ' ') {
-	
+	initGameBoard();
+	int usrinx, usriny;
+
+	std::map<int, char> player;
+	int playerCnt;
+	char bufPlayerID;
+	std::cout << "Player Count: ";
+	std::cin >> playerCnt;
+
+	for (int i=0; i<playerCnt; i++) {
+		std::cout << "Player ID: ";
+		std::cin >> bufPlayerID;
+		player[i]=bufPlayerID;
 	}
 
+	int moveCnt = 0;
+	while (winner() == ' ') {
+		printBoard();
+		std::cout << player[moveCnt % playerCnt] << "(x y): ";
+		std::cin >> usrinx;
+		std::cin >> usriny;
+		updatePosition(usrinx, usriny, player[moveCnt % playerCnt]);
+		moveCnt++;
+	}
+
+	printBoard();
+	std::cout << "Player " << winner() << " wins!" << std::endl;
 
 	return 0;
 }
@@ -28,6 +51,11 @@ void printBoard() {
 		for (int j=0; j<gameBoardSize-1; j++) {
 			std::cout << " " << gameBoard[i][j] << " |";
 		}
+		std::cout << " " << gameBoard[i][gameBoardSize-1] << std::endl;
+		for (int j=0; j<4*(gameBoardSize-1) + 3; j++) {
+			std::cout << "-";
+		}
+		std::cout <<  std::endl;
 	}
 }
 
@@ -90,7 +118,7 @@ char checkDiag(int d) {
 				return ' ';
 			}
 		}
-		return ' ';
+		return firstChar;
 	}
 	if (d == 2) {
 		int firstChar = gameBoard[gameBoardSize][0];
@@ -102,9 +130,9 @@ char checkDiag(int d) {
 				return ' ';
 			}
 		}
-		return ' ';
+		return firstChar;
 	}
-
+	return ' ';
 }
 
 void initGameBoard(){
