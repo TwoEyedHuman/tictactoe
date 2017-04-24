@@ -15,25 +15,26 @@ char checkDiag(int d);
 
 
 int main() {
-	initGameBoard();
-	int usrinx, usriny;
+	initGameBoard(); //initialize game board
+	int usrinx, usriny; //user input
 
-	std::map<int, char> player;
-	int playerCnt;
-	char bufPlayerID;
+	std::map<int, char> player; //translate player int to ID, used with move count
+	int playerCnt; //number of players
+	char bufPlayerID; //buffer to hold player IDs
 	std::cout << "Player Count: ";
 	std::cin >> playerCnt;
 
+	//grab player ID and load into the player map
 	for (int i=0; i<playerCnt; i++) {
 		std::cout << "Player ID: ";
 		std::cin >> bufPlayerID;
 		player[i]=bufPlayerID;
 	}
 
-	int moveCnt = 0;
+	int moveCnt = 0; //keep track of how many moves have occurred
 	while (winner() == ' ') {
 		printBoard();
-		std::cout << player[moveCnt % playerCnt] << "(x y): ";
+		std::cout << player[moveCnt % playerCnt] << "(x y): "; 
 		std::cin >> usrinx;
 		std::cin >> usriny;
 		updatePosition(usrinx, usriny, player[moveCnt % playerCnt]);
